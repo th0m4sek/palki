@@ -39,6 +39,7 @@ void setup() {
   pinMode(3, INPUT_PULLUP);
   pinMode(4, INPUT_PULLUP);
   myservo.attach(9);
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -61,8 +62,8 @@ void loop() {
   }  
   
   if (Button3) {                                // jeden klik jeden ruch serwa
-    tryb = 0;
-    ruchServa();
+    if (tryb !=3) { sceneStart = time; }        //jesli nie tryb 3
+    tryb = 3;
   }
 
   switch (tryb) {
@@ -80,6 +81,14 @@ void loop() {
         ruchServa();
         i = i + 1;
         if ( i == scene2size ) { resetFunc(); }
+      }
+      break;
+      
+    case 3 :
+      if (Button3) {                            // aktywowanie servrwa przy wcisnetym przycisku i wypsanie czasu aktywacji
+        ruchServa();
+        Serial.print("time = ");
+        Serial.println(time-sceneStart);
       }
       break;
   }
